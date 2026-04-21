@@ -1,28 +1,39 @@
-# Project Title
+# Project Title  
+Analyzing the Correlation Between Binge Drinking and Mental Health Using CDC Data  
 
-Write a 1-2 sentences that quickly and clearly convey what your repo is for.
+This project explores the relationship between binge drinking behaviors and mental health outcomes in the United States using publicly available CDC datasets.
 
-## Overview
+## Overview  
+This project uses CDC data to analyze how binge drinking is associated with cases of mental health issues reported by the state. Binge drinking is one of the most common forms of excessive alcohol use in the U.S.
 
-Expand on those introductory sentences with a brief but informative description of your project's purpose and goals. This section should help visitors decide whether they should dig deeper into your repo/project.
+The goal is to identify patterns, trends, and possible correlations between alcohol consumption and mental health cases. Research suggests that individuals experiencing anxiety or depression are more likely to engage in heavy drinking, indicating a strong relationship between these variables.
 
-### Interesting Insight (Optional)
+## Interesting Insight (Optional)  
+One key insight is that adults who report frequent anxiety or depression tend to show higher rates of binge drinking compared to those without these conditions.
 
-This is optional but highly recommended. You'll include one interesting insight from your project as part of the README. This insight is most effective when you include a visual. Keep in mind that this visual must be included as an image file (e.g., JPG, PNG, etc.). You can export plots created with `{ggplot2}` by using the function `ggsave`.
+This suggests a possible feedback loop where poor mental health may lead to increased alcohol use, which can then worsen mental health outcomes.
 
-## Data Sources and Acknowledgements
+## Data Sources and Acknowledgements  
+- cdc data on excessive drinking
 
-Be sure to list where you got any data used within the project. Be sure to acknowledge any one whose work or elements you're drawing upon.
+All data used in this project comes from publicly available CDC resources.
 
-## Current Plan
+## Current Plan  
+- Clean and preprocess CDC datasets related to alcohol use and mental health  
+- Merge datasets based on demographic variables. 
+- Perform exploratory data analysis (EDA)
+- Create visualizations (histograms, correlation plots, regression models)  
+- Analyze relationships between binge drinking frequency and mental health cases.  
+- Build a simple predictive model to explore trends  
 
-Provide some information about what you intend to do with the project. You can additionally refer the visitor to your detailed plan document.
+## Repo Structure  
+- /data → raw and cleaned CDC datasets  
+- /scripts → data cleaning and analysis code  
+- /plots → exported visualizations  
+- /docs → reports or documentation  
+- README.md → project overview  
 
-## Repo Structure
+## Authors  
+Sailesh Rajkumar– Penn State, Applied Data Science  
 
-Use this section to explain the structure of your repo. This should help visitors quickly figure out where they should look to find certain elements. Further, you can use this space to highlight and briefly explain important/key files in the repo.
-
-
-## Authors
-
-Give information about who are the authors of the project and how people can get in touch if they have questions.
+For questions or collaboration, contact: (add your email or GitHub here)
