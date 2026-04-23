@@ -34,6 +34,4 @@ All data used in this project comes from publicly available CDC resources.
 - README.md → project overview  
 
 ## Authors  
-Sailesh Rajkumar– Penn State, Applied Data Science  
-
-For questions or collaboration, contact: (add your email or GitHub here)
+Sailesh, Shlok & Nihal.
