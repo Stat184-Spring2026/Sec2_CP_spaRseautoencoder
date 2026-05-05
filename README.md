@@ -16,7 +16,7 @@ This suggests a possible feedback loop where poor mental health may lead to incr
 ## Data Sources and Acknowledgements  
 - cdc data on excessive drinking
 
-All data used in this project comes from publicly available CDC resources.
+All the data used in this project comes from publicly available CDC resources.
 
 ## Current Plan  
 - Clean and preprocess CDC datasets related to alcohol use and mental health  
