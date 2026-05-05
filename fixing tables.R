@@ -38,7 +38,7 @@ final_df <- depression_clean %>%
   select(
     State,
     depression,
-    `Binge drinking* prevalence†`,
+    prevalence,
     p75,
     mean
   )

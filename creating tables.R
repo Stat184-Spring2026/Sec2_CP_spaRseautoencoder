@@ -4,12 +4,6 @@ library(tidyverse)
 
 data <- read_csv("final_merged_data.csv")
 
-data <- data %>%
-  rename(
-    prevalence = `Binge drinking* prevalence†`,
-    p75 = p75
-  )
-
 #1 Depression vs Binge Drinking
 ggplot(data, aes(x = prevalence, y = depression)) +
   geom_point() +
