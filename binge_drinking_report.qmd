@@ -1,0 +1,216 @@
+---
+title: "Analyzing the Correlation Between Binge Drinking and Mental Health Using CDC Data"
+author: "Shlok, Sailesh, and Nihal"
+date: today
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    fig-cap-location: bottom
+    tbl-cap-location: top
+bibliography: references.bib
+csl: apa7.csl
+---
+
+```{r setup, include=FALSE}
+# Style Guide: Tidyverse Style Guide (https://style.tidyverse.org/)
+# Primary Author: Shlok, Sailesh and Nihal
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+
+# Load libraries
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(psych)
+```
+
+# Introduction
+
+Binge drinking is one of the most prevalent forms of excessive alcohol consumption in the United States, affecting roughly one in six adults. While the immediate health risks of binge drinking are well documented, its relationship with mental health outcomes, particularly depression, has received comparatively less attention at the population level. This report investigates whether states with higher binge drinking rates also tend to report higher rates of depression, and whether the intensity of drinking occasions, measured by drinks consumed per episode, correlates with depression prevalence.
+
+Using publicly available data from the Centers for Disease Control and Prevention (CDC), we explore binge drinking behavior and depression rates across all 50 U.S. states and the District of Columbia for the year 2022. Our analysis is exploratory in nature: we seek to identify patterns and generate hypotheses about the relationship between alcohol use and mental health rather than establish causal claims.
+
+Our guiding research questions are:
+
+1. Do states with higher binge drinking prevalence tend to have higher rates of depression?
+2. Is the average number of drinks consumed per binge occasion associated with depression rates across states?
+
+# Data
+
+## Data Provenance
+
+All three datasets used in this analysis were sourced from the Centers for Disease Control and Prevention (CDC), specifically from the Behavioral Risk Factor Surveillance System (BRFSS), a nationwide telephone survey conducted annually across all U.S. states and territories [@cdc_brfss].
+
+**Binge Drinking Prevalence Dataset:** This dataset reports the percentage of adults who engage in binge drinking by state for 2022. The CDC defines binge drinking as consuming four or more drinks on one occasion for women and five or more for men. Data were collected through the BRFSS survey, where respondents self-reported their drinking behaviors. The unit of observation is the U.S. state.
+
+**Binge Drinking Intensity Dataset:** This dataset reports the average number of drinks consumed per binge drinking occasion by state for 2022, including the 75th percentile value. This provides a measure of drinking intensity beyond just prevalence.
+
+**Depression Dataset:** This dataset reports the number of adults per 100,000 people diagnosed with depression by state. Data were similarly collected through BRFSS self-reported health surveys [@cdc_depression].
+
+All data were collected by the CDC for public health monitoring purposes and are freely available through the CDC's official data portal. The data reflect self-reported responses and are subject to the limitations inherent in survey-based data collection, including potential underreporting of alcohol use and mental health diagnoses.
+
+## FAIR and CARE Principles
+
+### FAIR Principles
+
+The FAIR principles stand for Findability, Accessibility, Interoperability, and Reusability.
+
+**Findability:** The CDC datasets are publicly available through the CDC's official website and data portal, making them easy to locate. Each dataset has a clear title and is associated with the well-known BRFSS survey, which has persistent documentation online.
+
+**Accessibility:** The data are freely downloadable in CSV format without requiring authentication or payment. The CDC portal provides open access to all BRFSS datasets, satisfying the accessibility requirement.
+
+**Interoperability:** The datasets use standard formats (CSV) and common variable types (state names, percentages, counts) that are compatible with a wide range of statistical software including R, Python, and Excel. However, the datasets do not use standardized ontologies or linked data formats, which slightly limits interoperability at a more technical level.
+
+**Reusability:** The datasets include sufficient metadata to understand what was measured and how. The CDC provides documentation on survey methodology, definitions (e.g., what constitutes binge drinking), and collection procedures, making the data reusable for future analyses.
+
+### CARE Principles
+
+The CARE principles stand for Collective Benefit, Authority to Control, Responsibility, and Ethics, and were developed primarily to guide the use of Indigenous data.
+
+These datasets were collected at the U.S. state level through a federal public health survey and do not involve Indigenous-specific data collection. As such, the CARE principles are less directly applicable here. However, we acknowledge that state-level aggregation obscures variation within communities, including Indigenous communities, which may face disproportionate burdens related to both binge drinking and depression. Future analyses using more granular demographic data should carefully consider CARE principles, particularly around who benefits from the analysis and whether marginalized communities have authority over how their data are used and represented.
+
+## Cases and Case Attributes
+
+### What is a Case?
+
+In this dataset, each case represents a single U.S. state or territory. That is, each row in our data corresponds to one state (or the District of Columbia), and the values recorded describe the collective drinking behavior and mental health outcomes of adults living in that state in 2022. There are 51 cases in total (50 states + DC).
+
+### Case Attributes
+
+The following attributes are present in our merged dataset:
+
+- **State:** The name of the U.S. state or territory. This is a categorical (nominal) variable serving as the identifier for each case.
+- **depression:** The total number of adults diagnosed with depression per 100,000 people in that state. This is a quantitative discrete variable measured in number of people per 100,000.
+- **prevalence:** The percentage of adults in the state who engage in binge drinking, measured as a percentage (%). This is a quantitative continuous variable.
+- **p75:** The 75th percentile of drinks consumed per binge drinking occasion in that state. This is a quantitative continuous variable measured in number of drinks.
+- **mean:** The mean number of drinks consumed per binge drinking occasion in that state. This is a quantitative continuous variable measured in number of drinks.
+
+# Exploratory Data Analysis
+
+## Descriptive Statistics
+
+To better understand the distributions of our key variables, we computed descriptive statistics across all 51 states and DC. @tbl-descstats summarizes the central tendency and spread of each quantitative variable in our dataset.
+
+```{r}
+#| label: tbl-descstats
+#| tbl-cap: "Descriptive Statistics for Key Variables Across U.S. States (2022)"
+#| echo: false
+# Primary Author: Shlok | Reviewed by: Nihal
+
+# Load data
+merged_data <- read_csv("final_merged_data.csv", show_col_types = FALSE)
+
+# Compute descriptive statistics
+desc_stats <- merged_data |>
+  select(depression, prevalence, p75, mean) |>
+  psych::describe() |>
+  as.data.frame() |>
+  select(n, mean, sd, median, min, max) |>
+  round(2)
+
+rownames(desc_stats) <- c(
+  "Depression (per 100k)",
+  "Binge Drinking Prevalence (%)",
+  "Drinks per Occasion (75th Pct)",
+  "Drinks per Occasion (Mean)"
+)
+
+desc_stats |>
+  kable(
+    col.names = c("N", "Mean", "SD", "Median", "Min", "Max"),
+    booktabs = TRUE
+  ) |>
+  kable_styling(
+    latex_options = c("striped", "hold_position"),
+    font_size = 10
+  )
+```
+
+As shown in @tbl-descstats, binge drinking prevalence across states ranges considerably, suggesting meaningful variation between states. Depression rates similarly vary, with some states reporting substantially higher counts per 100,000 residents than others. The mean number of drinks per binge occasion is relatively consistent across states, hovering around 5.5 drinks, while the 75th percentile values show slightly more variation.
+
+## Binge Drinking Prevalence Across States
+
+@fig-prevalence displays the binge drinking prevalence across all states, ordered from highest to lowest. This visualization helps identify which states have the most significant binge drinking burdens.
+
+```{r}
+#| label: fig-prevalence
+#| fig-cap: "Binge Drinking Prevalence (%) by U.S. State, 2022"
+#| fig-alt: "A horizontal bar chart showing binge drinking prevalence as a percentage for each U.S. state in 2022. States are ordered from highest to lowest prevalence. Montana and North Dakota appear near the top with prevalence around 24%, while states like Utah and Alabama appear near the bottom with prevalence around 13%."
+#| fig-height: 8
+#| echo: false
+# Primary Author: Shlok | Reviewed by: Sailesh
+
+merged_data |>
+  mutate(State = fct_reorder(State, prevalence)) |>
+  ggplot(aes(x = prevalence, y = State)) +
+  geom_col(fill = "#2c7bb6", alpha = 0.85) +
+  labs(
+    x = "Binge Drinking Prevalence (%)",
+    y = "State",
+    title = "Binge Drinking Prevalence by State (2022)",
+    caption = "Source: CDC BRFSS, 2022"
+  ) +
+  theme_minimal(base_size = 9) +
+  theme(
+    axis.text.y = element_text(size = 6),
+    plot.title = element_text(face = "bold")
+  )
+```
+
+@fig-prevalence reveals notable geographic variation in binge drinking rates. States like Montana, North Dakota, and the District of Columbia report the highest prevalence, while Utah, Alabama, and Kentucky report the lowest. This pattern partially aligns with regional cultural and demographic differences in alcohol consumption. The wide range suggests that state-level factors, whether social, economic, or policy-driven, play a meaningful role in shaping drinking behaviors.
+
+## Relationship Between Binge Drinking and Depression
+
+@fig-scatter explores the relationship between binge drinking prevalence and depression rates across states.
+
+```{r}
+#| label: fig-scatter
+#| fig-cap: "Relationship Between Binge Drinking Prevalence and Depression Rate by State, 2022"
+#| fig-alt: "A scatter plot with binge drinking prevalence on the x-axis and depression rate per 100,000 on the y-axis. Each point represents a U.S. state. A smoothed trend line is overlaid. The plot shows a weak positive trend, suggesting states with higher binge drinking prevalence tend to have slightly higher depression rates, though there is considerable spread around the trend line."
+#| echo: false
+# Primary Author: Shlok | Reviewed by: Nihal
+
+merged_data |>
+  ggplot(aes(x = prevalence, y = depression)) +
+  geom_point(color = "#d7191c", alpha = 0.7, size = 2) +
+  geom_smooth(method = "loess", se = TRUE, color = "#2c7bb6") +
+  labs(
+    x = "Binge Drinking Prevalence (%)",
+    y = "Depression Rate (per 100,000)",
+    title = "Binge Drinking Prevalence vs. Depression Rate (2022)",
+    caption = "Source: CDC BRFSS, 2022"
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+@fig-scatter suggests a weak positive trend between binge drinking prevalence and depression rates across states. States with higher binge drinking prevalence tend to show slightly elevated depression rates, though the relationship is not perfectly linear and there is considerable spread around the trend line. This is consistent with existing public health literature suggesting a bidirectional relationship between alcohol use and depression. However, given that our data is aggregated at the state level, we cannot infer individual-level relationships from these patterns, a limitation known as the ecological fallacy.
+
+# Conclusion
+
+This exploratory analysis investigated the relationship between binge drinking behavior and depression rates across U.S. states in 2022. Our visualizations and descriptive statistics reveal variation across states in both binge drinking prevalence and depression rates, with some evidence suggesting that states with higher binge drinking rates tend to report higher levels of depression. However, given the aggregated, state-level nature of our data, we cannot draw causal conclusions from these patterns alone.
+
+Future work could incorporate individual-level survey data to better control for confounding factors such as age, income, and access to healthcare. Additionally, longitudinal data spanning multiple years would allow for trend analysis and stronger inference about the relationship between alcohol use and mental health outcomes.
+
+# Author Contributions
+
+**Shlok:** Created and structured the QMD file, contributed to data cleaning and merging alongside Sailesh, wrote the introduction, data provenance, FAIR/CARE assessment, and cases and case attributes sections, and produced the descriptive statistics table and accompanying visualization.
+
+**Sailesh:** Led the data cleaning and preparation pipeline, wrangling raw CDC datasets into analysis-ready CSVs and producing the merged final dataset, with contributions from Shlok. Produced a data visualization and contributed to the exploratory data analysis narrative.
+
+**Nihal:** Contributed to the exploratory data analysis, produced a data visualization and summary table, and assisted with narrative writing and proofreading. All team members collaborated closely throughout the project, providing feedback on each other's work and ensuring consistency across sections.
+
+# References
+
+::: {#refs}
+:::
+
+# Code Appendix
+
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```
