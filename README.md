@@ -21,6 +21,7 @@ All data come from the CDC's Behavioral Risk Factor Surveillance System (BRFSS),
 - Percentage of adults who binge drink by state
 - Average number of drinks consumed per binge occasion by state
 - Number of adults diagnosed with depression per 100,000 people by state
+All the data used in this project comes from publicly available CDC resources.
 
 ## Repo Structure
 
