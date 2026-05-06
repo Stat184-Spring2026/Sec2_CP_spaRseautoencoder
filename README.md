@@ -1,37 +1,45 @@
-# Project Title  
-Analyzing the Correlation Between Binge Drinking and Mental Health Using CDC Data  
+# Analyzing the Correlation Between Binge Drinking and Mental Health Using CDC Data
 
-This project explores the relationship between binge drinking behaviors and mental health outcomes in the United States using publicly available CDC datasets.
+## Overview
 
-## Overview  
-This project uses CDC data to analyze how binge drinking is associated with cases of mental health issues reported by the state. Binge drinking is one of the most common forms of excessive alcohol use in the U.S.
+This project explores the relationship between binge drinking behavior and 
+depression rates across all 50 U.S. states and the District of Columbia using 
+publicly available CDC data from 2022. Our analysis is exploratory in nature: 
+we seek to identify patterns and generate hypotheses rather than establish 
+causal claims.
 
-The goal is to identify patterns, trends, and possible correlations between alcohol consumption and mental health cases. Research suggests that individuals experiencing anxiety or depression are more likely to engage in heavy drinking, indicating a strong relationship between these variables.
+## Research Questions
 
-## Interesting Insight (Optional)  
-One key insight is that adults who report frequent anxiety or depression tend to show higher rates of binge drinking compared to those without these conditions.
+1. Do states with higher binge drinking prevalence tend to have higher rates of depression?
+2. Is the average number of drinks consumed per binge occasion associated with 
+depression rates across states?
 
-This suggests a possible feedback loop where poor mental health may lead to increased alcohol use, which can then worsen mental health outcomes.
+## Data Sources
 
-## Data Sources and Acknowledgements  
-- cdc data on excessive drinking
+All data come from the CDC's Behavioral Risk Factor Surveillance System (BRFSS), 2022:
 
+- Percentage of adults who binge drink by state
+- Average number of drinks consumed per binge occasion by state
+- Number of adults diagnosed with depression per 100,000 people by state
 All the data used in this project comes from publicly available CDC resources.
 
-## Current Plan  
-- Clean and preprocess CDC datasets related to alcohol use and mental health  
-- Merge datasets based on demographic variables. 
-- Perform exploratory data analysis (EDA)
-- Create visualizations (histograms, correlation plots, regression models)  
-- Analyze relationships between binge drinking frequency and mental health cases.  
-- Build a simple predictive model to explore trends  
+## Repo Structure
 
-## Repo Structure  
-- /data → raw and cleaned CDC datasets  
-- /scripts → data cleaning and analysis code  
-- /plots → exported visualizations  
-- /docs → reports or documentation  
-- README.md → project overview  
+- `final_merged_data.csv` — cleaned and merged dataset used for analysis
+- `binge_percent_clean.csv` — cleaned binge drinking prevalence data
+- `binge_amount_clean.csv` — cleaned drinks per occasion data
+- `depression_clean.csv` — cleaned depression rate data
+- `data sets/` — raw CDC datasets
+- `binge_drinking_report.qmd` — main analysis report (renders to PDF)
+- `references.bib` — bibliography file
+- `linting_script.R` — script for code style checking
 
-## Authors  
-Sailesh, Shlok & Nihal.
+## How to Reproduce
+
+1. Clone this repo
+2. Open `binge_drinking_report.qmd` in RStudio
+3. Render to PDF
+
+## Authors
+
+Shlok, Sailesh, and Nihal
