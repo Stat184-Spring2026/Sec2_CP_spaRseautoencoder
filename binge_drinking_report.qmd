@@ -5,6 +5,7 @@ date: today
 format:
   pdf:
     toc: true
+    toc-depth: 3
     number-sections: true
     fig-cap-location: bottom
     tbl-cap-location: top
@@ -14,7 +15,7 @@ csl: apa7.csl
 
 ```{r setup, include=FALSE}
 # Style Guide: Tidyverse Style Guide (https://style.tidyverse.org/)
-# Primary Author: Shlok, Sailesh and Nihal
+# Primary Author: Shlok, Sailesh and Nihalw
 
 knitr::opts_chunk$set(
   echo = FALSE,
