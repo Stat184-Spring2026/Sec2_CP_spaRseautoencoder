@@ -103,7 +103,7 @@ To better understand the distributions of our key variables, we computed descrip
 #| echo: false
 # Primary Author: Shlok | Reviewed by: Nihal
 
-# Load data
+# PCIP: Plan - load data and compute descriptive statistics for key variables
 merged_data <- read_csv("final_merged_data.csv", show_col_types = FALSE)
 
 # Compute descriptive statistics
@@ -174,7 +174,7 @@ merged_data |>
 #| fig-cap: "Relationship Between Binge Drinking Prevalence and Depression Rate by State, 2022"
 #| fig-alt: "A scatter plot with binge drinking prevalence on the x-axis and depression rate per 100,000 on the y-axis. Each point represents a U.S. state. A smoothed trend line is overlaid. The plot shows a weak positive trend, suggesting states with higher binge drinking prevalence tend to have slightly higher depression rates, though there is considerable spread around the trend line."
 #| echo: false
-# Primary Author: Shlok | Reviewed by: Nihal
+# Primary Author: Nihal | Reviewed by: Shlok
 
 merged_data |>
   ggplot(aes(x = prevalence, y = depression)) +
